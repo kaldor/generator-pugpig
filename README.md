@@ -1,7 +1,7 @@
 Pugpig Boilerplate Generator
 ========================================
 
-Usage (for your end-users)
+Usage
 ---------------
 
 1. Install Yeoman: `npm install -g yo`
