@@ -1,6 +1,6 @@
 {
   "name": "generator-pugpig",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Yeoman Generator for Pugpig",
   "main": "app/index.js",
   "repository": {
