@@ -1,4 +1,4 @@
-# generator-pugpig [![Build Status](https://secure.travis-ci.org/markj-/generator-pugpig.png?branch=master)](https://travis-ci.org/markj-/generator-pugpig)
+# generator-pugpig
 
 A generator for [Yeoman](http://yeoman.io).
 
@@ -34,6 +34,41 @@ Finally, initiate the generator:
 ```
 $ yo pugpig
 ```
+
+### Yeoman Sub Generators
+
+The Pugpig generator comes with several "sub generators" for your generating pleasure. 
+
+#### Yeoman Sub Generators
+
+The first is a testing sub generator which is used by running:
+
+```
+$ yo pugpig:testing all
+```
+
+This will output the Pugpig Boilerplate test folder in the folder it is run in. It will include both functional and unit test examples and the libraries that are required. Alternatively you can output only the functional test example, or only the unit test examples by running:
+
+
+```
+$ yo pugpig:testing unit
+```
+
+Or
+
+```
+$ yo pugpig:testing functional
+```
+
+#### Yeoman Sub Generators
+
+Also included is a component generator for outputting a new CSS file for a component in your template. This is used by running:
+
+```
+$ yo pugpig:component componentName
+```
+
+Currently you have to import this component into your _components.sass file but this will be appended automatically in a future release.
 
 ### Getting To Know Yeoman
 
