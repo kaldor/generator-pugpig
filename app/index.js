@@ -183,7 +183,7 @@ PugpigGenerator.prototype.appStructure = function appStructure() {
 
   this.template('index.html', appDir + 'static/index.html', projectData);
 
-  this.copy('Gruntfile.js', themeFolder + 'Gruntfile.js');
+  this.template('Gruntfile.js', themeFolder + 'Gruntfile.js');
 
   this.template('_package.json', themeFolder + 'package.json', projectData);
 
