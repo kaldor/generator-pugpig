@@ -1,10 +1,93 @@
 'use strict';
 var util = require('util');
 var path = require('path');
+var childProcess = require('child_process');
+var spawn = childProcess.spawn;
+var exec = childProcess.exec;
 var yeoman = require('yeoman-generator');
+var DRUPAL = 'Drupal';
+var WORDPRESS = 'Wordpress';
+var fs = require('fs');
+var STATIC = 'Static';
 var themeFolder;
+var promptData = {
+  templateType: null,
+  publisherName: null,
+  publicationName: null
+};
 var appDir;
+var _ = require('lodash');
 
+var writeBuildXML = function writeBuildXML( template ) {
+  fs.writeFile('build.xml', template({
+    publisher: promptData.publisherName,
+    publication: promptData.publicationName
+  }), function (err) {
+    if ( err !== null ) {
+      console.log( 'Write file error: ' + err );
+    }
+    console.log('build.xml created');
+  });
+};
+
+var generateBuildXML = function generateBuildXML() {
+
+  var templateType = promptData.templateType,
+    buildTemplateFile;
+
+  if (templateType === DRUPAL) {
+    buildTemplateFile = 'buildutils/template-build-drupal_and_static.xml';
+  } else if (templateType === WORDPRESS) {
+    buildTemplateFile = 'buildutils/template-build-wordpress_and_static.xml';
+  } else if (templateType === STATIC) {
+    buildTemplateFile = 'buildutils/template-build-static.xml';
+  }
+
+  fs.readFile(buildTemplateFile, {
+    encoding: 'utf8',
+  }, function(err, data) {
+    if (err !== null) {
+      console.log( 'Read file error: ' + err );
+    } else {
+
+      var buildTemplate = _.template( data );
+
+      writeBuildXML( buildTemplate );
+
+    }
+  });
+
+};
+
+var addGitSubmodules = function addGitSubmodules() {
+  exec('git submodule add git@bitbucket.org:kaldorgroup/kaldor-build-utils.git buildutils', function (error, stdout, stderr) {
+    console.log('stdout: ' + stdout);
+    if (stderr) {
+      console.log('stderr: ' + stderr);
+    }
+    if (error !== null) {
+      console.log('exec error: ' + error);
+    } else {
+      generateBuildXML();
+    }
+  });
+};
+
+var initGit = function initGit() {
+  var init = spawn('git', ['init']);
+
+  init.stdout.on('data', function (data) {
+    console.log('stdout: ' + data);
+  });
+
+  init.stderr.on('data', function (data) {
+    console.log('stderr: ' + data);
+  });
+
+  init.on('close', function () {
+    addGitSubmodules();
+  });
+};
 
 var PugpigGenerator = module.exports = function PugpigGenerator(args, options, config) {
   yeoman.generators.Base.apply(this, arguments);
@@ -12,9 +95,12 @@ var PugpigGenerator = module.exports = function PugpigGenerator(args, options, c
   this.on('end', function () {
     process.chdir(themeFolder);
     this.installDependencies({ skipInstall: options['skip-install'] });
+    process.chdir('../../');
+    initGit.call( this );
   });
 
   this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
+
 };
 
 util.inherits(PugpigGenerator, yeoman.generators.Base);
@@ -23,7 +109,7 @@ PugpigGenerator.prototype.askFor = function askFor() {
   var cb = this.async();
 
   // have Yeoman greet the user.
-  console.log(this.yeoman);
+  console.log(this.pugpig);
 
   var prompts = [{
     type: 'list',
@@ -44,9 +130,9 @@ PugpigGenerator.prototype.askFor = function askFor() {
 
   this.prompt(prompts, function (props) {
 
-    this.templateType = props.templateType;
-    this.publisherName = props.publisherName;
-    this.publicationName = props.publicationName;
+    promptData.templateType = props.templateType;
+    promptData.publisherName = props.publisherName;
+    promptData.publicationName = props.publicationName;
 
     cb();
   }.bind(this));
@@ -54,27 +140,37 @@ PugpigGenerator.prototype.askFor = function askFor() {
 
 PugpigGenerator.prototype.appStructure = function appStructure() {
 
-  var projectName = this.publisherName + '-' + this.publicationName + '-Server',
+  var projectName = promptData.publisherName + '-' + promptData.publicationName + '-Server',
     projectData = {
       projectName: projectName
     },
+    templateType = promptData.templateType,
     modulesFolder;
 
-  themeFolder = 'themes/' + this.publicationName.toLowerCase() + '/';
+  themeFolder = 'themes/' + promptData.publicationName.toLowerCase() + '/';
   appDir = themeFolder + 'app/';
 
   this.mkdir('themes');
   this.mkdir(themeFolder);
 
-  if (this.templateType === 'Drupal') {
+  if (templateType === DRUPAL) {
     modulesFolder = 'modules';
-  } else if (this.templateType === 'Wordpress') {
+  } else if (templateType === WORDPRESS) {
     modulesFolder = 'plugins';
   }
 
   if ( modulesFolder ) {
     this.mkdir(modulesFolder);
-    this.mkdir(modulesFolder + '/pugpig-' + this.publicationName.toLowerCase());
+    this.mkdir(modulesFolder + '/pugpig-' + promptData.publicationName.toLowerCase());
+  }
+
+  if (templateType === DRUPAL) {
+    modulesFolder = 'modules';
+  } else if (templateType === WORDPRESS) {
+    this.template('wordpress/plugins.php', modulesFolder + '/pugpig-' + promptData.publicationName.toLowerCase() + '/pugpig_' + promptData.publicationName.toLowerCase() + '.php', {
+      publicationCapitalized: promptData.publicationName,
+      publicationLowercase: promptData.publicationName.toLowerCase()
+    });
   }
 
   this.mkdir(appDir);
