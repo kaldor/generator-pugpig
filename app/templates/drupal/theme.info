@@ -1,0 +1,5 @@
+name        = <%= publication %>
+description = <%= publication %> theme created for the Pugpig apps.
+version = "7.x-0.0_0"
+core        = 7.x
+engine      = phptemplate
