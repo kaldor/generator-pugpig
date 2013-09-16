@@ -19,10 +19,14 @@ module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
 
   // configurable paths
-  var yeomanConfig = {
-    app: 'app',
-    dist: 'dist'
-  };
+  var distRoot = 'dist',
+    yeomanConfig = {
+      app: 'app',
+      dist: {
+        'static': distRoot + '/pugpig-<%= publication %>-static',
+        'theme': distRoot + '/pugpig-<%= publication %>-theme'
+      }
+    };
 
   grunt.initConfig({
     yeoman: yeomanConfig,
@@ -74,11 +78,11 @@ module.exports = function (grunt) {
           }
         }
       },
-      dist: {
+      'static': {
         options: {
           middleware: function (connect) {
             return [
-              mountFolder(connect, yeomanConfig.dist)
+              mountFolder(connect, yeomanConfig.dist['static'])
             ];
           }
         }
@@ -90,20 +94,35 @@ module.exports = function (grunt) {
       }
     },
     clean: {
-      dist: {
+      'static': {
         files: [{
           dot: true,
           src: [
             '.tmp',
-            '<%%= yeoman.dist %>/*',
-            '!<%%= yeoman.dist %>/.git*'
+            '<%%= yeoman.dist.static %>/*',
+            '!<%%= yeoman.dist.static %>/.git*'
+          ]
+        }]
+      },
+      theme: {
+        files: [{
+          dot: true,
+          src: [
+            '.tmp',
+            '<%%= yeoman.dist.theme %>/*',
+            '!<%%= yeoman.dist.theme %>/.git*'
           ]
         }]
       },
       server: '.tmp'
     },
     compass: {
-      dist: {
+      'static': {
+        options: {
+          config: '.compass.rb'
+        }
+      },
+      theme: {
         options: {
           config: '.compass.rb'
         }
@@ -115,41 +134,80 @@ module.exports = function (grunt) {
       }
     },
     imagemin: {
-      dist: {
+      'static': {
         files: [{
           expand: true,
           cwd: '<%%= yeoman.app %>/images',
           src: '{,*/}*.{png,jpg,jpeg}',
-          dest: '<%%= yeoman.dist %>/images'
+          dest: '<%%= yeoman.dist.static %>/images'
+        }]
+      },
+      theme: {
+        files: [{
+          expand: true,
+          cwd: '<%%= yeoman.app %>/images',
+          src: '{,*/}*.{png,jpg,jpeg}',
+          dest: '<%%= yeoman.dist.theme %>/images'
         }]
       }
     },
     svgmin: {
-      dist: {
+      'static': {
         files: [{
           expand: true,
           cwd: '<%%= yeoman.app %>/images',
           src: '{,*/}*.svg',
-          dest: '<%%= yeoman.dist %>/images'
+          dest: '<%%= yeoman.dist.static %>/images'
+        }]
+      },
+      theme: {
+        files: [{
+          expand: true,
+          cwd: '<%%= yeoman.app %>/images',
+          src: '{,*/}*.svg',
+          dest: '<%%= yeoman.dist.static %>/images'
         }]
       }
     },
     cssmin: {
-      dist: {
+      'static': {
         expand: true,
-        cwd: '<%%= yeoman.dist %>/styles',
+        cwd: '<%%= yeoman.dist.static %>/styles',
         src: ['*.css'],
-        dest: '<%%= yeoman.dist %>/styles',
+        dest: '<%%= yeoman.dist.static %>/styles',
+        ext: '.css'
+      },
+      theme: {
+        expand: true,
+        cwd: '<%%= yeoman.dist.theme %>/styles',
+        src: ['*.css'],
+        dest: '<%%= yeoman.dist.theme %>/styles',
         ext: '.css'
       }
     },
     copy: {
-      dist: {
+      'static': {
         files: [{
           expand: true,
           dot: true,
           cwd: '<%%= yeoman.app %>',
-          dest: '<%%= yeoman.dist %>',
+          dest: '<%%= yeoman.dist.static %>',
+          src: [
+            '*.{ico,png,txt}',
+            '.htaccess',
+            'images/{,*/}*.{webp,gif}',
+            'styles/*.css',
+            'static/*',
+            'fonts/*'
+          ]
+        }]
+      },
+      theme: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%%= yeoman.app %>',
+          dest: '<%%= yeoman.dist.theme %>',
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
@@ -173,17 +231,38 @@ module.exports = function (grunt) {
         'compass',
         'copy:styles'
       ],
-      dist: [
+      'static': [
+        'compass',
+        'imagemin',
+        'svgmin'
+      ],
+      theme: [
         'compass',
         'imagemin',
         'svgmin'
       ]
+    },
+    replace: {<% if ( templateType === 'Drupal' ) { %>
+      update_version: {
+        src: ['<%%= yeoman.dist.theme %>/<%= publication %>.info'],
+        overwrite: true,
+        replacements: [{
+          from: /version\s*=\s*".*?"/g,
+          to: "version =\"7.x-<%%= grunt.config('meta-version').toString().replace(/\.([^\.]*)$/g, '_$1') %>\""
+        }]<% } else if ( templateType === 'Wordpress') { %>
+        src: ['<%%= yeoman.dist.theme %>/style.css'],
+        overwrite: true,
+        replacements: [{
+          from: /Version: [0-9]*\.[0-9]*\.[0-9]*/g,
+          to: "Version: <%%= grunt.config('meta-version') %>"
+        }]<% } %>
+      }
     }
   });
 
   grunt.registerTask('server', function (target) {
     if (target === 'dist') {
-      return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
+      return grunt.task.run(['build', 'open', 'connect:static:keepalive']);
     }
 
     grunt.task.run([
@@ -196,11 +275,80 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build', [
-    'clean:dist',
-    'concurrent:dist',
-    'copy:dist',
-    'cssmin'
+    'build:theme',
+    'build:static'
   ]);
+
+  grunt.registerTask('build:theme', [
+    'clean:theme',
+    'concurrent:theme',
+    'copy:theme',
+    'cssmin:theme',
+    'describe',
+    'replace:update_version'
+  ]);
+
+  grunt.registerTask('build:static', [
+    'clean:static',
+    'concurrent:static',
+    'copy:static',
+    'cssmin:static'
+  ]);
+
+  // TODO: npm module that performs this task
+  grunt.registerTask('describe', 'Describes current git commit', function (prop) {
+
+    var done = this.async();
+
+    grunt.log.write('Describe current commit: ');
+
+    grunt.util.spawn({
+      cmd : 'git',
+      args : [ 'describe', '--tags', '--abbrev=0', '--match', '[0-9]*' ]
+    }, function (err, result) {
+
+      if (err) {
+        grunt.log.error(err);
+        return done(false);
+      }
+
+      var latestVersion = result.toString().trim();
+
+      grunt.util.spawn({
+        cmd : 'git',
+        args : [ 'describe', '--tags', '--abbrev=0', '--exact-match', 'HEAD' ]
+      }, function (err, result) {
+
+        if (err || latestVersion !== result) {
+          latestVersion = latestVersion + '_dev';
+        }
+
+        grunt.util.spawn({
+          cmd : 'git',
+          args : [ 'diff', '--shortstat' ]
+        }, function (err, result) {
+          if (err) {
+            grunt.log.error(err);
+            return done(false);
+          }
+
+          if (result.toString().trim().length) {
+            latestVersion = latestVersion + '_local';
+          }
+
+          grunt.config(prop || 'meta-version', latestVersion);
+
+          grunt.log.ok(latestVersion);
+
+          done(latestVersion);
+
+        });
+
+      });
+
+    });
+
+  });
 
   grunt.registerTask('default', [
     'build'

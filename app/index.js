@@ -165,7 +165,10 @@ PugpigGenerator.prototype.appStructure = function appStructure() {
   }
 
   if (templateType === DRUPAL) {
-    modulesFolder = 'modules';
+    this.template('drupal/theme.info', appDir + promptData.publicationName.toLowerCase() + '.info', {
+      publication: promptData.publicationName
+    });
+    this.copy('drupal/template.php', appDir + 'template.php');
   } else if (templateType === WORDPRESS) {
     this.template('wordpress/plugins.php', modulesFolder + '/pugpig-' + promptData.publicationName.toLowerCase() + '/pugpig_' + promptData.publicationName.toLowerCase() + '.php', {
       publicationCapitalized: promptData.publicationName,
@@ -183,7 +186,11 @@ PugpigGenerator.prototype.appStructure = function appStructure() {
 
   this.template('index.html', appDir + 'static/index.html', projectData);
 
-  this.template('Gruntfile.js', themeFolder + 'Gruntfile.js');
+  this.template('Gruntfile.js', themeFolder + 'Gruntfile.js', {
+    publication: promptData.publicationName.toLowerCase(),
+    pkg: this.pkg,
+    templateType: promptData.templateType
+  });
 
   this.template('_package.json', themeFolder + 'package.json', projectData);
 
