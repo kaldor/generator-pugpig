@@ -9,8 +9,8 @@
   "bugs": "https://github.com/kaldor/generator-pugpig/issues",
   "author": {
     "name": "Mark Jones",
-    "email": "mark@thisismarkup.co.uk",
-    "url": "https://github.com/markj-"
+    "email": "mark.jones@kaldorgroup.co.uk",
+    "url": "https://github.com/kaldor"
   },
   "main": "app/index.js",
   "repository": {
