@@ -39,7 +39,7 @@ $ yo pugpig
 
 The Pugpig generator comes with several "sub generators" for your generating pleasure. 
 
-#### Yeoman Sub Generators
+#### Testing Sub Generator
 
 The first is a testing sub generator which is used by running:
 
@@ -60,7 +60,7 @@ Or
 $ yo pugpig:testing functional
 ```
 
-#### Yeoman Sub Generators
+#### Component Sub Generator
 
 Also included is a component generator for outputting a new CSS file for a component in your template. This is used by running:
 
