@@ -174,6 +174,9 @@ PugpigGenerator.prototype.appStructure = function appStructure() {
       publicationCapitalized: promptData.publicationName,
       publicationLowercase: promptData.publicationName.toLowerCase()
     });
+    this.template('wordpress/style.css', appDir + 'style.css', {
+      publicationName: promptData.publicationName
+    });
   }
 
   this.mkdir(appDir);
