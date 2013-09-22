@@ -29,10 +29,24 @@ var generateVisualRegressionTests = function generateVisualRegressionTests() {
     if (error !== null) {
       console.log('exec error: ' + error);
     } else {
-      fs.rename('visual-regression','test/visual-regression');
+      fs.rename('visual-regression','visual-regression');
     }
   });
-}
+};
+
+var generateHTMLValidationTests = function generateHTMLValidationTests() {
+  exec('git clone https://github.com/kaldor/pugpig-feed-page-validator.git feed-page-validator', function (error, stdout, stderr) {
+    console.log('stdout: ' + stdout);
+    if (stderr) {
+      console.log('stderr: ' + stderr);
+    }
+    if (error !== null) {
+      console.log('exec error: ' + error);
+    } else {
+      fs.rename('feed-page-validator','feed-page-validator');
+    }
+  });
+};
 
 var TestingGenerator = module.exports = function TestingGenerator(args, options, config) {
   // By calling `NamedBase` here, we get the argument to the subgenerator call
@@ -48,10 +62,13 @@ var TestingGenerator = module.exports = function TestingGenerator(args, options,
     generateUnitTests.call( this );
   } else if ( this.name === 'css' ) {
     generateVisualRegressionTests.call( this );
+  } else if ( this.name === 'html' ) {
+    generateHTMLValidationTests.call( this );
   } else if ( this.name === 'all' ) {
     generateUnitTests.call( this );
     generateFunctionalTests.call( this );
     generateVisualRegressionTests.call( this );
+    generateHTMLValidationTests.call( this );
   }
 
 };
