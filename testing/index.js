@@ -29,7 +29,7 @@ var generateVisualRegressionTests = function generateVisualRegressionTests() {
     if (error !== null) {
       console.log('exec error: ' + error);
     } else {
-      fs.rename('visual-regression','visual-regression');
+      fs.rename('visual-regression','test/visual-regression');
     }
   });
 };
@@ -43,7 +43,7 @@ var generateHTMLValidationTests = function generateHTMLValidationTests() {
     if (error !== null) {
       console.log('exec error: ' + error);
     } else {
-      fs.rename('feed-page-validator','feed-page-validator');
+      fs.rename('feed-page-validator','test/feed-page-validator');
     }
   });
 };
