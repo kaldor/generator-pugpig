@@ -41,10 +41,9 @@ ComponentGenerator.prototype.create = function create() {
 
 ComponentGenerator.prototype.updateComponents = function updateComponents() {
 
-  var componentsPartialPath = '../_components.sass',
-    self = this;
+  var componentsPartialPath = '../_components.sass';
 
-  fs.appendFile(componentsPartialPath, '\n@import components/' + self.name.toLowerCase().replace(' ', '-'), function (err) {
+  fs.appendFile(componentsPartialPath, '\n@import components/' + this.name.toLowerCase().replace(' ', '-'), function (err) {
     if (err) {
       throw err;
     }
