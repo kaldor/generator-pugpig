@@ -60,6 +60,16 @@ Or
 $ yo pugpig:testing functional
 ```
 
+#### Template Sub Generator
+
+Want to start a new template? The template generator is here for you.
+
+```
+$ yo pugpig:template templateName
+```
+
+This will be appended automatically to your index.html table of contents and a new Sass file will be created for your template and used within.
+
 #### Component Sub Generator
 
 Also included is a component generator for outputting a new CSS file for a component in your template. This is used by running:
@@ -68,7 +78,7 @@ Also included is a component generator for outputting a new CSS file for a compo
 $ yo pugpig:component componentName
 ```
 
-Currently you have to import this component into your _components.sass file but this will be appended automatically in a future release.
+This will be appended automatically to your components partial.
 
 ### Getting To Know Yeoman
 
