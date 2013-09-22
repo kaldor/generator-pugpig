@@ -44,15 +44,11 @@ ComponentGenerator.prototype.updateComponents = function updateComponents() {
   var componentsPartialPath = '../_components.sass',
     self = this;
 
-  fs.readFile(componentsPartialPath, {
-    encoding: 'utf8',
-  }, function(err, data) {
-    fs.writeFile(componentsPartialPath, data + '\n@import components/' + self.name.toLowerCase().replace(' ', '-'), function(err) {
-      if ( err !== null ) {
-        console.log( 'Write file error: ' + err );
-      }
-      console.log('Components updated');
-    });
+  fs.appendFile(componentsPartialPath, '\n@import components/' + self.name.toLowerCase().replace(' ', '-'), function (err) {
+    if (err) {
+      throw err;
+    }
+    console.log('Components updated');
   });
 
 };
