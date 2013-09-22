@@ -217,10 +217,6 @@ PugpigGenerator.prototype.gitFiles = function gitFiles() {
   this.copy('gitmodules', '.gitmodules');
 };
 
-PugpigGenerator.prototype.karmaFiles = function karmaFiles() {
-  this.copy('karma.conf.js', themeFolder + 'karma.conf.js');
-};
-
 PugpigGenerator.prototype.compassFiles = function compassFiles() {
   this.copy('compass.rb', themeFolder + '.compass.rb');
 };

@@ -14,6 +14,7 @@ var generateFunctionalTests = function generateFunctionalTests() {
 var generateUnitTests = function generateUnitTests() {
   this.directory('unit', 'test/unit');
   this.copy('test-main.js','test/test-main.js');
+  this.copy('karma.conf.js', 'karma.conf.js');
 };
 
 var TestingGenerator = module.exports = function TestingGenerator(args, options, config) {
