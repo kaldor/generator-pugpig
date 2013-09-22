@@ -1,6 +1,7 @@
 'use strict';
 var util = require('util');
 var yeoman = require('yeoman-generator');
+var fs = require('fs');
 
 var ComponentGenerator = module.exports = function ComponentGenerator(args, options, config) {
   // By calling `NamedBase` here, we get the argument to the subgenerator call
@@ -28,12 +29,30 @@ ComponentGenerator.prototype.askFor = function askFor() {
 
 ComponentGenerator.prototype.create = function create() {
 
-  this.write('_' + this.name.toLowerCase() + '.sass', [
+  this.write('_' + this.name.toLowerCase().replace(' ', '-') + '.sass', [
     '/**',
     ' * COMPONENTS',
     ' * ' + this.name,
     ' * ' + this.description,
     ' */'
   ].join('\n'));
+
+};
+
+ComponentGenerator.prototype.updateComponents = function updateComponents() {
+
+  var componentsPartialPath = '../_components.sass',
+    self = this;
+
+  fs.readFile(componentsPartialPath, {
+    encoding: 'utf8',
+  }, function(err, data) {
+    fs.writeFile(componentsPartialPath, data + '\n@import components/' + self.name.toLowerCase().replace(' ', '-'), function(err) {
+      if ( err !== null ) {
+        console.log( 'Write file error: ' + err );
+      }
+      console.log('Components updated');
+    });
+  });
 
 };
