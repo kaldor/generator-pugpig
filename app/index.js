@@ -195,6 +195,7 @@ PugpigGenerator.prototype.appStructure = function appStructure() {
   this.template('_package.json', themeFolder + 'package.json', projectData);
 
   this.template('_bower.json', themeFolder + 'bower.json', projectData);
+  this.copy('bowerrc', themeFolder + '.bowerrc');
 
 };
 
