@@ -1,3 +1,0 @@
-[submodule "buildutils"]
-  path = buildutils
-  url = git@bitbucket.org:kaldorgroup/kaldor-build-utils.git
