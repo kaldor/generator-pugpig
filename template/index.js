@@ -1,0 +1,47 @@
+'use strict';
+var util = require('util');
+var yeoman = require('yeoman-generator');
+var fs = require('fs');
+
+var TemplateGenerator = module.exports = function TemplateGenerator(args, options, config) {
+  // By calling `NamedBase` here, we get the argument to the subgenerator call
+  // as `this.name`.
+  yeoman.generators.NamedBase.apply(this, arguments);
+};
+
+util.inherits(TemplateGenerator, yeoman.generators.NamedBase);
+
+TemplateGenerator.prototype.askFor = function askFor() {
+
+  var cb = this.async();
+
+  var prompts = [{
+    type: 'input',
+    name: 'description',
+    message: 'Please provide a description for your template'
+  }];
+
+  this.prompt(prompts, function (props) {
+    this.description = props.description;
+    this.fsTemplateName = this.name.toLowerCase().replace(' ', '-');
+    cb();
+  }.bind(this));
+};
+
+TemplateGenerator.prototype.create = function create() {
+
+  this.template('template.html', this.fsTemplateName + '.html', {
+    templateName: this.name,
+    templateCSSFile: this.fsTemplateName
+  });
+
+};
+
+TemplateGenerator.prototype.createSass = function create() {
+
+  this.template('styles.sass', '../styles/' + this.fsTemplateName + '.sass', {
+    templateName: this.name,
+    templateDescription: this.description
+  });
+
+};
