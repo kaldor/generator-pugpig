@@ -63,7 +63,9 @@ var TestingGenerator = module.exports = function TestingGenerator(args, options,
 
   yeoman.generators.NamedBase.apply(this, arguments);
 
-  generateTestingLibraries.call( this );
+  if ( this.name === 'functional' || this.name === 'unit' ) {
+    generateTestingLibraries.call( this );
+  }
 
   if ( this.name === 'functional' ) {
     generateFunctionalTests.call( this );
