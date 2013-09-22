@@ -47,7 +47,9 @@ The first is a testing sub generator which is used by running:
 $ yo pugpig:testing all
 ```
 
-This will output the Pugpig Boilerplate test folder in the folder it is run in. It will include functional and unit testing examples and the libraries that are required. An added bonus is the inclusion of the Pugpig CSS Regression testing tool (https://github.com/kaldor/pugpig-css-regression). Alternatively you can output only the functional test example, or only the unit test examples by running:
+This will output the Pugpig Boilerplate test folder in the folder it is run in. It will include functional and unit testing examples and the libraries that are required. An added bonus is the inclusion of the Pugpig CSS Regression testing tool (https://github.com/kaldor/pugpig-css-regression) and the Pugpig Feed Page Validator tool(https://github.com/kaldor/pugpig-feed-page-validator). Currently the dependencies for these tools need to be installed manually but will be automated in a future release.
+
+You can output only the functional test example, or only the unit test examples by running:
 
 
 ```
@@ -60,10 +62,16 @@ Or
 $ yo pugpig:testing functional
 ```
 
-Finally you can only generate the CSS Regression testing tool by running:
+You can only generate the CSS Regression testing tool by running:
 
 ```
 $ yo pugpig:testing css
+```
+
+You can only generate the Feed Page Validator tool by running:
+
+```
+$ yo pugpig:testing html
 ```
 
 #### Template Sub Generator
