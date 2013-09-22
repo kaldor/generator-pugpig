@@ -5,18 +5,19 @@ var childProcess = require('child_process');
 var spawn = childProcess.spawn;
 var exec = childProcess.exec;
 var yeoman = require('yeoman-generator');
+var fs = require('fs');
+var _ = require('lodash');
+
 var DRUPAL = 'Drupal';
 var WORDPRESS = 'Wordpress';
-var fs = require('fs');
 var STATIC = 'Static';
-var themeFolder;
 var promptData = {
   templateType: null,
   publisherName: null,
   publicationName: null
 };
+var themeFolder;
 var appDir;
-var _ = require('lodash');
 
 var writeBuildXML = function writeBuildXML( template ) {
   fs.writeFile('build.xml', template({
