@@ -45,3 +45,10 @@ TemplateGenerator.prototype.createSass = function create() {
   });
 
 };
+
+TemplateGenerator.prototype.updateTOC = function updateTOC() {
+
+  this.appendToFile('index.html', 'ul', '  <li><a href="' + this.fsTemplateName + '.html">' + this.name + '</a></li>\n  ');
+  console.log('Table of Contents updated');
+
+};
