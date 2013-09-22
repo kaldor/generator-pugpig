@@ -154,14 +154,14 @@ PugpigGenerator.prototype.appStructure = function appStructure() {
   this.mkdir(themeFolder);
 
   if (templateType === DRUPAL) {
-    modulesFolder = 'modules';
+    modulesFolder = 'modules/';
   } else if (templateType === WORDPRESS) {
-    modulesFolder = 'plugins';
+    modulesFolder = 'plugins/';
   }
 
   if ( modulesFolder ) {
     this.mkdir(modulesFolder);
-    this.mkdir(modulesFolder + '/pugpig-' + promptData.publicationName.toLowerCase());
+    this.mkdir(modulesFolder + 'pugpig-' + promptData.publicationName.toLowerCase());
   }
 
   if (templateType === DRUPAL) {
@@ -170,7 +170,7 @@ PugpigGenerator.prototype.appStructure = function appStructure() {
     });
     this.copy('drupal/template.php', appDir + 'template.php');
   } else if (templateType === WORDPRESS) {
-    this.template('wordpress/plugins.php', modulesFolder + '/pugpig-' + promptData.publicationName.toLowerCase() + '/pugpig_' + promptData.publicationName.toLowerCase() + '.php', {
+    this.template('wordpress/plugins.php', modulesFolder + 'pugpig-' + promptData.publicationName.toLowerCase() + '/pugpig_' + promptData.publicationName.toLowerCase() + '.php', {
       publicationCapitalized: promptData.publicationName,
       publicationLowercase: promptData.publicationName.toLowerCase()
     });
