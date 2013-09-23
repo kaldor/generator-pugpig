@@ -7,6 +7,7 @@ var exec = childProcess.exec;
 var yeoman = require('yeoman-generator');
 var fs = require('fs');
 var _ = require('lodash');
+var chalk = require('chalk');
 
 var DRUPAL = 'Drupal';
 var WORDPRESS = 'Wordpress';
@@ -109,8 +110,20 @@ util.inherits(PugpigGenerator, yeoman.generators.Base);
 PugpigGenerator.prototype.askFor = function askFor() {
   var cb = this.async();
 
-  // have Yeoman greet the user.
-  console.log(this.pugpig);
+  var pugpig = chalk.cyan('\n                                                                ' +
+  '\n                                                88              ' +
+  '\n                                                                ' +
+  '\n8b,dPPYba,  88       88  ,adPPYb,d8 8b,dPPYba,  88  ,adPPYb,d8  ' +
+  '\n88P\'    "8a 88       88 a8"    `Y88 88P\'    "8a 88 a8"    `Y88  ' +
+  '\n88       d8 88       88 8b       88 88       d8 88 8b       88  ' +
+  '\n88b,   ,a8" "8a,   ,a88 "8a,   ,d88 88b,   ,a8" 88 "8a,   ,d88  ' +
+  '\n88`YbbdP"\'   `"YbbdP\'Y8  `"YbbdP"Y8 88`YbbdP"\'  88  `"YbbdP"Y8  ' +
+  '\n88                       aa,    ,88 88              aa,    ,88  ' +
+  '\n88                        "Y8bbdP"  88               "Y8bbdP"   ' +
+  '\n                                                                ' +
+  '\n                                                                ');
+
+  console.log(pugpig);
 
   var prompts = [{
     type: 'list',
