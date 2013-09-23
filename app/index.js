@@ -218,7 +218,6 @@ PugpigGenerator.prototype.projectfiles = function projectfiles() {
 
 PugpigGenerator.prototype.gitFiles = function gitFiles() {
   this.copy('gitignore', '.gitignore');
-  this.copy('gitmodules', '.gitmodules');
 };
 
 PugpigGenerator.prototype.compassFiles = function compassFiles() {
