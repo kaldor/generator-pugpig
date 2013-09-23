@@ -76,6 +76,7 @@ var TestingGenerator = module.exports = function TestingGenerator(args, options,
   } else if ( this.name === 'html' ) {
     generateHTMLValidationTests.call( this );
   } else if ( this.name === 'all' ) {
+    generateTestingLibraries.call( this );
     generateUnitTests.call( this );
     generateFunctionalTests.call( this );
     generateVisualRegressionTests.call( this, true );
