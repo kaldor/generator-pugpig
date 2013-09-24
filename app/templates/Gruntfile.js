@@ -213,7 +213,9 @@ module.exports = function (grunt) {
             '.htaccess',
             'images/{,*/}*.{webp,gif}',
             'styles/*.css',
-            'fonts/*'
+            'fonts/*'<% if ( templateType === 'Drupal' ) { %>,
+            '<%= publication %>.info'<% } else if ( templateType === 'Wordpress' ) { %>,
+            'style.css'<% } %>
           ]
         }]
       },
@@ -302,16 +304,11 @@ module.exports = function (grunt) {
     grunt.log.write('Describe current commit: ');
 
     grunt.util.spawn({
-      cmd : 'git',
-      args : [ 'describe', '--tags', '--abbrev=0', '--match', '[0-9]*' ]
+      cmd: 'git',
+      args: [ 'describe', '--tags', '--abbrev=0', '--match', '[0-9]*' ]
     }, function (err, result) {
 
-      if (err) {
-        grunt.log.error(err);
-        return done(false);
-      }
-
-      var latestVersion = result.toString().trim();
+      var latestVersion = err ? '0.0.0' : result.toString().trim();
 
       grunt.util.spawn({
         cmd : 'git',
@@ -331,7 +328,7 @@ module.exports = function (grunt) {
             return done(false);
           }
 
-          if (result.toString().trim().length) {
+          if ( result.toString().trim().length ) {
             latestVersion = latestVersion + '_local';
           }
 
@@ -339,7 +336,7 @@ module.exports = function (grunt) {
 
           grunt.log.ok(latestVersion);
 
-          done(latestVersion);
+          done( latestVersion );
 
         });
 
