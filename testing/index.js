@@ -6,20 +6,12 @@ var childProcess = require('child_process');
 var exec = childProcess.exec;
 var _ = require('lodash');
 
-var generateTestingLibraries = function generateTestingLibraries() {
-  fs.exists('test', _.bind( function( exists ) {
-    if ( !exists ) {
-      this.mkdir('test');
-      this.directory('lib', 'test/lib');
-    }
-  }, this ) );
-};
-
 var generateFunctionalTests = function generateFunctionalTests() {
   this.directory('functional', 'test/functional');
 };
 
 var generateUnitTests = function generateUnitTests() {
+  this.directory('lib', 'test/lib');
   this.directory('unit', 'test/unit');
   this.copy('test-main.js','test/test-main.js');
   this.copy('karma.conf.js', 'karma.conf.js');
@@ -63,9 +55,11 @@ var TestingGenerator = module.exports = function TestingGenerator(args, options,
 
   yeoman.generators.NamedBase.apply(this, arguments);
 
-  if ( this.name === 'functional' || this.name === 'unit' ) {
-    generateTestingLibraries.call( this );
-  }
+  fs.existsSync('test', _.bind( function( exists ) {
+    if ( !exists ) {
+      this.mkdir('test');
+    }
+  }, this ) );
 
   if ( this.name === 'functional' ) {
     generateFunctionalTests.call( this );
@@ -76,7 +70,6 @@ var TestingGenerator = module.exports = function TestingGenerator(args, options,
   } else if ( this.name === 'html' ) {
     generateHTMLValidationTests.call( this );
   } else if ( this.name === 'all' ) {
-    generateTestingLibraries.call( this );
     generateUnitTests.call( this );
     generateFunctionalTests.call( this );
     generateVisualRegressionTests.call( this, true );
