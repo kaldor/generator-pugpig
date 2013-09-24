@@ -243,8 +243,8 @@ module.exports = function (grunt) {
         'svgmin'
       ]
     },
-    replace: {<% if ( templateType === 'Drupal' ) { %>
-      update_version: {
+    replace: {
+      update_version: {<% if ( templateType === 'Drupal' ) { %>
         src: ['<%%= yeoman.dist.theme %>/<%= publication %>.info'],
         overwrite: true,
         replacements: [{
