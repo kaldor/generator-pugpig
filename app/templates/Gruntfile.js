@@ -19,7 +19,8 @@ module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
 
   // configurable paths
-  var distRoot = 'dist',
+  var cms = <% if ( templateType === 'Drupal' ) { %>'drupal'<% } else if ( templateType === 'Wordpress' ) { %>'wordpress'<% } else { %>'YOUR_CMS'<% } %>,
+    distRoot = 'dist',
     yeomanConfig = {
       app: 'app',
       dist: {
@@ -210,12 +211,31 @@ module.exports = function (grunt) {
           dest: '<%%= yeoman.dist.theme %>',
           src: [
             '*.{ico,png,txt}',
-            '.htaccess',
             'images/{,*/}*.{webp,gif}',
             'styles/*.css',
-            'fonts/*'<% if ( templateType === 'Drupal' ) { %>,
-            '<%= publication %>.info'<% } else if ( templateType === 'Wordpress' ) { %>,
-            'style.css'<% } %>
+            'fonts/*'
+          ]
+        }]
+      },
+      drupal: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%%= yeoman.app %>',
+          dest: '<%%= yeoman.dist.theme %>',
+          src: [
+            '<%= publication %>.info'
+          ]
+        }]
+      },
+      wordpress: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%%= yeoman.app %>',
+          dest: '<%%= yeoman.dist.theme %>',
+          src: [
+            'style.css'
           ]
         }]
       },
@@ -244,19 +264,21 @@ module.exports = function (grunt) {
       ]
     },
     replace: {
-      update_version: {<% if ( templateType === 'Drupal' ) { %>
+      drupal: {
         src: ['<%%= yeoman.dist.theme %>/<%= publication %>.info'],
         overwrite: true,
         replacements: [{
           from: /version\s*=\s*".*?"/g,
           to: "version =\"7.x-<%%= grunt.config('meta-version').toString().replace(/\.([^\.]*)$/g, '_$1') %>\""
-        }]<% } else if ( templateType === 'Wordpress') { %>
+        }]
+      },
+      wordpress: {
         src: ['<%%= yeoman.dist.theme %>/style.css'],
         overwrite: true,
         replacements: [{
           from: /Version: [0-9]*\.[0-9]*\.[0-9]*/g,
           to: "Version: <%%= grunt.config('meta-version') %>"
-        }]<% } %>
+        }]
       }
     }
   });
@@ -276,7 +298,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build', [
-    'build:theme',
+    <% if ( templateType === 'Static' ) { %>//<% }%>'build:theme',
     'build:static'
   ]);
 
@@ -284,9 +306,10 @@ module.exports = function (grunt) {
     'clean:theme',
     'concurrent:theme',
     'copy:theme',
+    'copy:' + cms,
     'cssmin:theme',
     'describe',
-    'replace:update_version'
+    'replace:' + cms
   ]);
 
   grunt.registerTask('build:static', [
