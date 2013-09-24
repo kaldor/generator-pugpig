@@ -165,7 +165,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '<%%= yeoman.app %>/images',
           src: '{,*/}*.svg',
-          dest: '<%%= yeoman.dist.static %>/images'
+          dest: '<%%= yeoman.dist.theme %>/images'
         }]
       }
     },
@@ -213,7 +213,6 @@ module.exports = function (grunt) {
             '.htaccess',
             'images/{,*/}*.{webp,gif}',
             'styles/*.css',
-            'static/*',
             'fonts/*'
           ]
         }]
