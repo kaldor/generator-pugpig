@@ -254,13 +254,13 @@ module.exports = function (grunt) {
       ],
       'static': [
         'compass',
-        'imagemin',
-        'svgmin'
+        'imagemin:static',
+        'svgmin:static'
       ],
       theme: [
         'compass',
-        'imagemin',
-        'svgmin'
+        'imagemin:theme',
+        'svgmin:theme'
       ]
     },
     replace: {
