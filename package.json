@@ -1,6 +1,6 @@
 {
   "name": "generator-pugpig",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Yeoman Generator for Pugpig",
   "keywords": [
     "yeoman-generator"
