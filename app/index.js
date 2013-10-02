@@ -22,8 +22,8 @@ var appDir;
 
 var writeBuildXML = function writeBuildXML( template ) {
   fs.writeFile('build.xml', template({
-    publisher: promptData.publisherName,
-    publication: promptData.publicationName
+    publisher: promptData.publisherName.toLowerCase(),
+    publication: promptData.publicationName.toLowerCase()
   }), function (err) {
     if ( err !== null ) {
       console.log( 'Write file error: ' + err );
