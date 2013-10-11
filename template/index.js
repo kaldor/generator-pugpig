@@ -23,7 +23,7 @@ TemplateGenerator.prototype.askFor = function askFor() {
 
   this.prompt(prompts, function (props) {
     this.description = props.description;
-    this.fsTemplateName = this.name.toLowerCase().replace(' ', '-');
+    this.fsTemplateName = this.name.toLowerCase().replace(/\s/g, '-');
     cb();
   }.bind(this));
 };
