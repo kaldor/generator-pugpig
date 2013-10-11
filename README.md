@@ -5,7 +5,9 @@ A generator for [Yeoman](http://yeoman.io).
 
 ## Getting Started
 
-### Dependencies
+To make use of all of the tools that the Pugpig Generator provides, here is the full list of dependencies.
+
+### Dependencies for Yeoman Generator
 
 * nodejs - http://nodejs.org/
 * PhantomJS
@@ -15,6 +17,12 @@ A generator for [Yeoman](http://yeoman.io).
 ```gem install compass```
 * Compass Normalize
 ```gem install compass-normalize```
+
+#### Dependencies for HTML Validation
+
+* Ruby 1.9.3
+* nokogiri - gem install nokogiri
+* nestful - gem install nestful
 
 ### What is Yeoman?
 
