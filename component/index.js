@@ -23,13 +23,14 @@ ComponentGenerator.prototype.askFor = function askFor() {
 
   this.prompt(prompts, function (props) {
     this.description = props.description;
+    this.componentName = this.name.toLowerCase().replace(/\s/g, '-');
     cb();
   }.bind(this));
 };
 
 ComponentGenerator.prototype.create = function create() {
 
-  this.write('_' + this.name.toLowerCase().replace(' ', '-') + '.sass', [
+  this.write('_' + this.componentName + '.sass', [
     '/**',
     ' * COMPONENTS',
     ' * ' + this.name,
@@ -43,7 +44,7 @@ ComponentGenerator.prototype.updateComponents = function updateComponents() {
 
   var componentsPartialPath = '../_components.sass';
 
-  fs.appendFile(componentsPartialPath, '\n@import components/' + this.name.toLowerCase().replace(' ', '-'), function (err) {
+  fs.appendFile(componentsPartialPath, '\n@import components/' + this.componentName, function (err) {
     if (err) {
       throw err;
     }
