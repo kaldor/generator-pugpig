@@ -5,6 +5,17 @@ A generator for [Yeoman](http://yeoman.io).
 
 ## Getting Started
 
+### Dependencies
+
+* nodejs - http://nodejs.org/
+* PhantomJS
+```npm install -g phantomjs```
+* CasperJS - http://casperjs.org/ - install using homebrew
+* Compass
+```gem install compass```
+* Compass Normalize
+```gem install compass-normalize```
+
 ### What is Yeoman?
 
 Trick question. It's not a thing. It's this guy:
