@@ -7,7 +7,9 @@ A generator for [Yeoman](http://yeoman.io).
 
 To make use of all of the tools that the Pugpig Generator provides, here is the full list of dependencies.
 
-### Dependencies for Yeoman Generator
+### Dependencies
+
+#### Dependencies for Yeoman Generator
 
 * nodejs - http://nodejs.org/
 * PhantomJS
