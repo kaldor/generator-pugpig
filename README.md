@@ -11,6 +11,7 @@ To make use of all of the tools that the Pugpig Generator provides, here is the 
 
 #### Dependencies for Yeoman Generator
 
+* Sass - http://sass-lang.com/ - gem install sass
 * nodejs - http://nodejs.org/
 * PhantomJS
 ```npm install -g phantomjs```
