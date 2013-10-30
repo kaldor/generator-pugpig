@@ -232,7 +232,3 @@ PugpigGenerator.prototype.projectfiles = function projectfiles() {
 PugpigGenerator.prototype.gitFiles = function gitFiles() {
   this.copy('gitignore', '.gitignore');
 };
-
-PugpigGenerator.prototype.compassFiles = function compassFiles() {
-  this.copy('compass.rb', themeFolder + '.compass.rb');
-};
