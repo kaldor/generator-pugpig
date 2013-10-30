@@ -15,10 +15,6 @@ To make use of all of the tools that the Pugpig Generator provides, here is the 
 * PhantomJS
 ```npm install -g phantomjs```
 * CasperJS - http://casperjs.org/ - install using homebrew
-* Compass
-```gem install compass```
-* Compass Normalize
-```gem install compass-normalize```
 
 #### Dependencies for HTML Validation
 

@@ -118,3 +118,19 @@ $medium: 640px
     font-style: normal
     font-family: quote($name)
     src: local(quote($local)), url($url) format(quote($format))
+
+=box-sizing($type)
+  @each $prefix in $prefixes
+    #{$prefix}-box-sizing: $type
+  box-sizing: $type
+
+=stretch($offset-top: 0, $offset-right: 0, $offset-bottom: 0, $offset-left: 0)
+  position: absolute
+  @if $offset-top
+    top: $offset-top
+  @if $offset-bottom
+    bottom: $offset-bottom
+  @if $offset-left
+    left: $offset-left
+  @if $offset-right
+    right: $offset-right
