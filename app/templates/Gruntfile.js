@@ -32,10 +32,6 @@ module.exports = function (grunt) {
   grunt.initConfig({
     yeoman: yeomanConfig,
     watch: {
-      compass: {
-        files: ['<%%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['compass:server']
-      },
       styles: {
         files: ['<%%= yeoman.app %>/styles/{,*/}*.css'],
         tasks: ['copy:styles']
@@ -116,23 +112,6 @@ module.exports = function (grunt) {
         }]
       },
       server: '.tmp'
-    },
-    compass: {
-      'static': {
-        options: {
-          config: '.compass.rb'
-        }
-      },
-      theme: {
-        options: {
-          config: '.compass.rb'
-        }
-      },
-      server: {
-        options: {
-          config: '.compass.rb'
-        }
-      }
     },
     imagemin: {
       'static': {
@@ -249,16 +228,13 @@ module.exports = function (grunt) {
     },
     concurrent: {
       server: [
-        'compass',
         'copy:styles'
       ],
       'static': [
-        'compass',
         'imagemin:static',
         'svgmin:static'
       ],
       theme: [
-        'compass',
         'imagemin:theme',
         'svgmin:theme'
       ]
