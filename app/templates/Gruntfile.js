@@ -32,9 +32,9 @@ module.exports = function (grunt) {
   grunt.initConfig({
     yeoman: yeomanConfig,
     watch: {
-      styles: {
-        files: ['<%%= yeoman.app %>/styles/{,*/}*.css'],
-        tasks: ['copy:styles']
+      sass: {
+        files: ['<%%= yeoman.app %>/styles/**/*.{scss,sass}'],
+        tasks: ['sass']
       },
       livereload: {
         options: {
@@ -113,6 +113,20 @@ module.exports = function (grunt) {
       },
       server: '.tmp'
     },
+    sass: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%%= yeoman.app %>/styles',
+          src: [
+            '**/*.sass',
+            '!**/_*.sass'
+          ],
+          dest: '.tmp/styles',
+          ext: '.css'
+        }]
+      }
+    },
     imagemin: {
       'static': {
         files: [{
@@ -152,15 +166,21 @@ module.exports = function (grunt) {
     cssmin: {
       'static': {
         expand: true,
-        cwd: '<%%= yeoman.dist.static %>/styles',
-        src: ['*.css'],
+        cwd: '.tmp/styles',
+        src: [
+          '*.css',
+          '!_*.css'
+        ],
         dest: '<%%= yeoman.dist.static %>/styles',
         ext: '.css'
       },
       theme: {
         expand: true,
-        cwd: '<%%= yeoman.dist.theme %>/styles',
-        src: ['*.css'],
+        cwd: '.tmp/styles',
+        src: [
+          '*.css',
+          '!_*.css'
+        ],
         dest: '<%%= yeoman.dist.theme %>/styles',
         ext: '.css'
       }
@@ -176,7 +196,6 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             'images/{,*/}*.{webp,gif}',
-            'styles/*.css',
             'static/*',
             'fonts/*'
           ]
@@ -217,24 +236,19 @@ module.exports = function (grunt) {
             'style.css'
           ]
         }]
-      },
-      styles: {
-        expand: true,
-        dot: true,
-        cwd: '<%%= yeoman.app %>/styles',
-        dest: '.tmp/styles/',
-        src: '{,*/}*.css'
       }
     },
     concurrent: {
       server: [
-        'copy:styles'
+        'sass'
       ],
       'static': [
+        'sass',
         'imagemin:static',
         'svgmin:static'
       ],
       theme: [
+        'sass',
         'imagemin:theme',
         'svgmin:theme'
       ]
