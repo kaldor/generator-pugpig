@@ -37,6 +37,16 @@ Not every new computer comes with a Yeoman pre-installed. He lives in the [npm](
 $ npm install -g yo
 ```
 
+### Updating
+
+Before you generate a project, you should type:
+
+```
+yo
+```
+
+For a list of your generators and you will also be shown which generators have updates available. Please try and use the latest version of the generator unless otherwise specified.
+
 ### Yeoman Generators
 
 Yeoman travels light. He didn't pack any generators when he moved in. You can think of a generator like a plug-in. You get to choose what type of application you wish to create, such as a Backbone application or even a Chrome extension.
