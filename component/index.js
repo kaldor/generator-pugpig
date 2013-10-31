@@ -35,7 +35,9 @@ ComponentGenerator.prototype.create = function create() {
     ' * COMPONENTS',
     ' * ' + this.name,
     ' * ' + this.description,
-    ' */'
+    ' */',
+    '',
+    '$name: ' + this.name.toLowerCase().replace(/\s/g, '-')
   ].join('\n'));
 
 };
