@@ -22,7 +22,7 @@
     "white": false,
     "globals": {
         "log": false,
-        "alert": false
+        "alert": false,
         "define": false,
         "describe": false,
         "xdescribe": false,
