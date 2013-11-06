@@ -19,7 +19,6 @@
     "strict": true,
     "trailing": true,
     "smarttabs": true,
-    "white": false,
     "globals": {
         "log": false,
         "alert": false,
