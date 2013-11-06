@@ -8,6 +8,7 @@
     "curly": true,
     "eqeqeq": true,
     "immed": true,
+    "forin": true,
     "indent": 2,
     "latedef": true,
     "newcap": true,
