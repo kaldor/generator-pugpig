@@ -84,6 +84,7 @@ var addBoilerplate = function addBoilerplate() {
     if (error !== null) {
       console.log('exec error: ' + error);
     }
+    PugpigGenerator.prototype.mkdir( appDir + 'styles/components' );
   });
 };
 
