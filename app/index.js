@@ -61,7 +61,7 @@ var generateBuildXML = function generateBuildXML() {
 
 };
 
-var addGitSubmodules = function addGitSubmodules() {
+var addBuildUtils = function addBuildUtils() {
   exec('git submodule add git@bitbucket.org:kaldorgroup/kaldor-build-utils.git buildutils', function (error, stdout, stderr) {
     console.log('stdout: ' + stdout);
     if (stderr) {
@@ -73,6 +73,23 @@ var addGitSubmodules = function addGitSubmodules() {
       generateBuildXML();
     }
   });
+};
+
+var addBoilerplate = function addBoilerplate() {
+  exec('git clone https://github.com/kaldor/pugpig-boilerplate.git ' + appDir + 'styles && rm -Rf ' + appDir + 'styles/.git*', function (error, stdout, stderr) {
+    console.log('stdout: ' + stdout);
+    if (stderr) {
+      console.log('stderr: ' + stderr);
+    }
+    if (error !== null) {
+      console.log('exec error: ' + error);
+    }
+  });
+};
+
+var addGitSubmodules = function addGitSubmodules() {
+  addBuildUtils();
+  addBoilerplate();
 };
 
 var initGit = function initGit() {
@@ -91,7 +108,7 @@ var initGit = function initGit() {
   });
 };
 
-var PugpigGenerator = module.exports = function PugpigGenerator(args, options, config) {
+var PugpigGenerator = module.exports = function PugpigGenerator(args, options) {
   yeoman.generators.Base.apply(this, arguments);
 
   this.on('end', function () {
@@ -196,10 +213,8 @@ PugpigGenerator.prototype.appStructure = function appStructure() {
   this.mkdir(appDir);
 
   this.directory('static', appDir + 'static');
-  this.directory('styles', appDir + 'styles');
 
   this.mkdir(appDir + 'static/images');
-  this.mkdir(appDir + 'styles/components');
 
   this.template('index.html', appDir + 'static/index.html', projectData);
 
