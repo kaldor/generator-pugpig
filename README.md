@@ -11,15 +11,19 @@ To make use of all of the tools that the Pugpig Generator provides, here is the 
 
 #### Dependencies for Yeoman Generator
 
-* Ruby 1.9.3
+* Ruby 1.8.7 (for Sass)
 * Sass - http://sass-lang.com/ - gem install sass
 * nodejs - http://nodejs.org/
+
+#### Dependencies for Functional Testing
+
 * PhantomJS
 ```npm install -g phantomjs```
 * CasperJS - http://casperjs.org/ - install using homebrew
 
 #### Dependencies for HTML Validation
 
+* Ruby 1.9.3
 * nokogiri - gem install nokogiri
 * nestful - gem install nestful
 
