@@ -31,17 +31,7 @@ TemplateGenerator.prototype.askFor = function askFor() {
 TemplateGenerator.prototype.create = function create() {
 
   this.template('template.html', this.fsTemplateName + '.html', {
-    templateName: this.name,
-    templateCSSFile: this.fsTemplateName
-  });
-
-};
-
-TemplateGenerator.prototype.createSass = function create() {
-
-  this.template('styles.sass', '../styles/' + this.fsTemplateName + '.sass', {
-    templateName: this.name,
-    templateDescription: this.description
+    templateName: this.name
   });
 
 };
