@@ -1,6 +1,6 @@
 // Generated on <%= (new Date).toISOString().split('T')[0] %> using <%= pkg.name %> <%= pkg.version %>
 'use strict';
-var LIVERELOAD_PORT = 35729;
+var LIVERELOAD_PORT = Math.floor(Math.random() * (39999 - 35729 + 1)) + 35729;
 var lrSnippet = require('connect-livereload')({port: LIVERELOAD_PORT});
 var mountFolder = function (connect, dir) {
   return connect.static(require('path').resolve(dir));
@@ -50,7 +50,7 @@ module.exports = function (grunt) {
     },
     connect: {
       options: {
-        port: 9000,
+        port: Math.floor(Math.random() * (9999 - 8000 + 1)) + 8000,
         hostname: '0.0.0.0'
       },
       livereload: {
