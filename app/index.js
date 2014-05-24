@@ -46,7 +46,7 @@ var generateBuildXML = function generateBuildXML() {
   }
 
   fs.readFile(buildTemplateFile, {
-    encoding: 'utf8',
+    encoding: 'utf8'
   }, function(err, data) {
     if (err !== null) {
       console.log( 'Read file error: ' + err );
