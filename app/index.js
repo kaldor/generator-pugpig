@@ -12,6 +12,7 @@ var chalk = require('chalk');
 var DRUPAL = 'Drupal';
 var WORDPRESS = 'Wordpress';
 var STATIC = 'Static';
+var TEMPLATE_CHOICES = [STATIC, DRUPAL, WORDPRESS];
 var promptData = {
   templateType: null,
   publisherName: null,
@@ -112,6 +113,26 @@ var initGit = function initGit() {
 var PugpigGenerator = module.exports = function PugpigGenerator(args, options) {
   yeoman.generators.Base.apply(this, arguments);
 
+  this.option('templateType', {
+    alias: 't',
+    desc: 'The template type. One of: ' + TEMPLATE_CHOICES.join(', '),
+    type: String
+  });
+
+  this.option('publisherName', {
+    desc: 'The publisher name',
+    type: String
+  });
+
+  this.option('publicationName', {
+    desc: 'The publication name',
+    type: String
+  });
+
+  promptData.templateType = options.templateType;
+  promptData.publisherName = options.publisherName;
+  promptData.publicationName = options.publicationName;
+
   this.on('end', function () {
     process.chdir(themeFolder);
     this.installDependencies({ skipInstall: options['skip-install'] });
@@ -143,28 +164,54 @@ PugpigGenerator.prototype.askFor = function askFor() {
 
   console.log(pugpig);
 
-  var prompts = [{
-    type: 'list',
-    name: 'templateType',
-    choices: ['Static', 'Drupal', 'Wordpress'],
-    message: 'What type of Pugpig template would you like to create?'
-  },
-  {
-    type: 'input',
-    name: 'publisherName',
-    message: 'What is the name of the publisher?'
-  },
-  {
-    type: 'input',
-    name: 'publicationName',
-    message: 'What is the name of the publication?'
-  }];
+  var prompts = [];
+
+  if (promptData.templateType) {
+    console.log('Template Type is ' + promptData.templateType);
+  } else {
+    prompts.push({
+      type: 'list',
+      name: 'templateType',
+      choices: TEMPLATE_CHOICES,
+      message: 'What type of Pugpig template would you like to create?'
+    });
+  }
+
+  if (promptData.publisherName) {
+    console.log('Publisher Name is ' + promptData.publisherName);
+  } else {
+      prompts.push({
+      type: 'input',
+      name: 'publisherName',
+      message: 'What is the name of the publisher?'
+    });
+  }
+
+  if (promptData.publicationName) {
+    console.log('Publication Name is ' + promptData.publicationName);
+  } else {
+      prompts.push( {
+      type: 'input',
+      name: 'publicationName',
+      message: 'What is the name of the publication?'
+    });
+  }
+
+  console.log();
 
   this.prompt(prompts, function (props) {
 
-    promptData.templateType = props.templateType;
-    promptData.publisherName = props.publisherName;
-    promptData.publicationName = props.publicationName;
+    if (props.templateType) {
+      promptData.templateType = props.templateType;
+    }
+
+    if (props.publisherName) {
+      promptData.publisherName = props.publisherName;
+    }
+
+    if (props.publicationName) {
+      promptData.publicationName = props.publicationName;
+    }
 
     cb();
   }.bind(this));
