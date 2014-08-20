@@ -42,7 +42,7 @@ module.exports = function (grunt) {
         },
         files: [
           '<%%= yeoman.app %>/static/*.html',
-          '.tmp/styles/{,*/}*.css',
+          '{.tmp,<%%= yeoman.app %>}/styles/{,*/}*.css',
           '{.tmp,<%%= yeoman.app %>}/scripts/{,*/}*.js',
           '<%%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
@@ -122,7 +122,7 @@ module.exports = function (grunt) {
             '**/*.sass',
             '!**/_*.sass'
           ],
-          dest: '.tmp/styles',
+          dest: '<%%= yeoman.app %>/styles',
           ext: '.css'
         }]
       }
