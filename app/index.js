@@ -269,7 +269,8 @@ PugpigGenerator.prototype.appStructure = function appStructure() {
   this.template('Gruntfile.js', themeFolder + 'Gruntfile.js', {
     publication: promptData.publicationName.toLowerCase(),
     pkg: this.pkg,
-    templateType: promptData.templateType
+    templateType: promptData.templateType,
+    connectPort: Math.floor(Math.random() * (9999 - 8000 + 1)) + 8000
   });
 
   this.template('_package.json', themeFolder + 'package.json', projectData);

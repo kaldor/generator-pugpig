@@ -50,7 +50,7 @@ module.exports = function (grunt) {
     },
     connect: {
       options: {
-        port: Math.floor(Math.random() * (9999 - 8000 + 1)) + 8000,
+        port: <%= connectPort %>,
         hostname: '0.0.0.0'
       },
       livereload: {
