@@ -236,6 +236,34 @@ module.exports = function (grunt) {
             'style.css'
           ]
         }]
+      },
+      static_scripts: {
+        expand: true,
+        dot: true,
+        cwd: '.tmp/scripts',
+        dest: '<%%= yeoman.dist.static %>/scripts',
+        src: '{,*/}*.js'
+      },
+      theme_scripts: {
+        expand: true,
+        dot: true,
+        cwd: '.tmp/scripts',
+        dest: '<%%= yeoman.dist.theme %>/scripts',
+        src: '{,*/}*.js'
+      },
+      static_bower_components: {
+        expand: true,
+        dot: true,
+        cwd: '.tmp/bower_components',
+        dest: '<%%= yeoman.dist.static %>/bower_components',
+        src: '**/*'
+      },
+      theme_bower_components: {
+        expand: true,
+        dot: true,
+        cwd: '.tmp/bower_components',
+        dest: '<%%= yeoman.dist.theme %>/bower_components',
+        src: '**/*'
       }
     },
     concurrent: {
@@ -270,6 +298,45 @@ module.exports = function (grunt) {
           to: "Version: <%%= grunt.config('meta-version') %>"
         }]
       }
+    },
+    useminPrepare: {
+      options: {
+        dest: '<%%= yeoman.dist.static %>'
+      },
+      html: '<%%= yeoman.app %>/static/index.html'
+    },
+    usemin: {
+      options: {
+        dirs: ['<%%= yeoman.dist.static %>']
+      },
+      html: ['<%%= yeoman.dist.static %>/static/{,*/}*.html']
+    },
+    requirejs: {
+      dist: {
+        // Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
+        options: {
+          // `name` and `out` is set by grunt-usemin
+          optimize: 'none',
+          preserveLicenseComments: false,
+          useStrict: true,
+          wrap: true,
+          findNestedDependencies: true
+        }
+      }
+    },
+    rename: {
+      bower_components: {
+        files: [{
+          src: [ distRoot + '/bower_components' ],
+          dest: '.tmp/bower_components'
+        }]
+      },
+      scripts: {
+        files: [{
+          src: [ distRoot + '/scripts' ],
+          dest: '.tmp/scripts'
+        }]
+      }
     }
   });
 
@@ -287,27 +354,52 @@ module.exports = function (grunt) {
     ]);
   });
 
+  var buildJSTasks = [
+      'useminPrepare',
+      'requirejs',
+      'uglify',
+      'usemin',
+      'rename'
+    ],
+    buildThemeTasks = [
+      'clean:theme',
+      'concurrent:theme',
+      'copy:theme',
+      'copy:' + cms,
+      'cssmin:theme',
+      'describe',
+      'replace:' + cms
+    ],
+    buildStaticTasks = [
+      'clean:static',
+      'concurrent:static',
+      'copy:static',
+      'cssmin:static'
+    ],
+    copyThemeJSTasks = [
+      'copy:theme_scripts',
+      'copy:theme_bower_components'
+    ],
+    copyStaticJSTasks = [
+      'copy:static_scripts',
+      'copy:static_bower_components'
+    ];
+
   grunt.registerTask('build', [
-    <% if ( templateType === 'Static' ) { %>//<% }%>'build:theme',
-    'build:static'
-  ]);
+    <% if ( templateType === 'Static' ) { %>//<% } %>'build:theme:nojs',
+    'build:static:nojs'
+  ].concat(
+    // buildJSTasks,
+    // copyStaticJSTasks,
+    // copyThemeJSTasks,
+    'clean:server'
+  ));
 
-  grunt.registerTask('build:theme', [
-    'clean:theme',
-    'concurrent:theme',
-    'copy:theme',
-    'copy:' + cms,
-    'cssmin:theme',
-    'describe',
-    'replace:' + cms
-  ]);
+  grunt.registerTask( 'build:theme', buildThemeTasks.concat( buildJSTasks, copyThemeJSTasks, 'clean:server' ));
+  grunt.registerTask( 'build:theme:nojs', buildThemeTasks );
 
-  grunt.registerTask('build:static', [
-    'clean:static',
-    'concurrent:static',
-    'copy:static',
-    'cssmin:static'
-  ]);
+  grunt.registerTask( 'build:static', buildStaticTasks.concat( buildJSTasks, copyStaticJSTasks, 'clean:server' ));
+  grunt.registerTask( 'build:static:nojs', buildStaticTasks );
 
   // TODO: npm module that performs this task
   grunt.registerTask('describe', 'Describes current git commit', function (prop) {
