@@ -289,8 +289,8 @@ PugpigGenerator.prototype.createScriptsDir = function createScriptsDir() {
 };
 
 PugpigGenerator.prototype.projectfiles = function projectfiles() {
-  this.copy('editorconfig', themeFolder + '.editorconfig');
-  this.copy('jshintrc', themeFolder + '.jshintrc');
+  this.copy('editorconfig', '.editorconfig');
+  this.copy('jshintrc', '.jshintrc');
 };
 
 PugpigGenerator.prototype.gitFiles = function gitFiles() {
