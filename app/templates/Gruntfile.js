@@ -176,7 +176,7 @@ module.exports = function (grunt) {
       },
       theme: {
         expand: true,
-        cwd: '.tmp/styles',
+        cwd: '<%%= yeoman.app %>/styles',
         src: [
           '*.css',
           '!_*.css'
