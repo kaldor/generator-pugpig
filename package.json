@@ -1,6 +1,6 @@
 {
   "name": "generator-pugpig",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "description": "Yeoman Generator for Pugpig",
   "keywords": [
     "yeoman-generator"
@@ -8,8 +8,8 @@
   "homepage": "https://github.com/kaldor/generator-pugpig",
   "bugs": "https://github.com/kaldor/generator-pugpig/issues",
   "author": {
-    "name": "Mark Jones",
-    "email": "mark.jones@kaldorgroup.co.uk",
+    "name": "Kaldor Group",
+    "email": "support@kaldorgroup.com",
     "url": "https://github.com/kaldor"
   },
   "main": "app/index.js",
